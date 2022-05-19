@@ -15,6 +15,7 @@ export default class Login extends React.Component {
     this.setState({
       [name]: valor,
     });
+
     this.setState(({ inputName }) => {
       const minLength = 3;
       if (inputName.length >= minLength) {
