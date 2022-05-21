@@ -29,7 +29,8 @@ handleChange = ({ target }) => {
   });
 }
 
-handleClick = async (inputSearch) => {
+handleClick = async () => {
+  const { inputSearch } = this.state;
   this.setState({ isLoading: true });
   const album = await searchAlbumsAPI(inputSearch);
   this.setState({
@@ -68,7 +69,7 @@ render() {
             type="button"
             data-testid="search-artist-button"
             disabled={ ButtonDisable }
-            onClick={ async () => { await this.handleClick(inputSearch); } }
+            onClick={ this.handleClick }
           >
             Pesquisar
 
