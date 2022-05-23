@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react/cjs/react.production.min';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
 
 export default class MusicCard extends Component {
@@ -10,14 +10,25 @@ export default class MusicCard extends Component {
     isLoading: false,
   }
 
+  componentDidMount() {
+    const { favoritMusic } = this.props;
+    this.setState({
+      favorit: favoritMusic,
+    });
+  }
+
   handleclick = async ({ target: { checked } }) => {
     const { music: { trackId } } = this.props;
     this.setState({
       favorit: checked,
       isLoading: true,
     });
+
+    const musica = await getMusics(trackId);
     if (checked) {
-      await addSong(await getMusics(trackId));
+      await addSong(musica[0]);
+    } else {
+      await removeSong(musica[0]);
     }
     this.setState({
       isLoading: false,
@@ -61,4 +72,5 @@ MusicCard.propTypes = {
     trackName: PropTypes.string,
     previewUrl: PropTypes.string,
   }).isRequired,
+  favoritMusic: PropTypes.bool.isRequired,
 };
